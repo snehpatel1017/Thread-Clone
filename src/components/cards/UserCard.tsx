@@ -9,20 +9,21 @@ interface params {
     name: string,
     username: string,
     imageUrl: string,
+    isright: boolean,
 }
 
-export default function UserCard({ userID, name, username, imageUrl }: params) {
+export default function UserCard({ userID, name, username, imageUrl, isright = false }: params) {
     const route = useRouter();
     return (
         <article className="flex justify-start gap-4">
             <div>
-                <img src={imageUrl} className="w-16 h-16 object-cover rounded-full"></img>
+                <img src={imageUrl} className={`${isright ? "w-24 h-12" : "w-16 h-16"} object-cover rounded-full`}></img>
             </div>
             <div className="flex flex-col w-full">
                 <h3>{name}</h3>
                 <p>@{username}</p>
             </div>
-            <Button className="bg-purple-500 h-10 hover:bg-purple-400" onClick={() => { route.push(`/profile/${userID}`) }} >View</Button>
+            <Button className={`bg-purple-500 ${isright ? "h-8" : "h-10"} hover:bg-purple-400`} onClick={() => { route.push(`/profile/${userID}`) }} >View</Button>
         </article>
     );
 }

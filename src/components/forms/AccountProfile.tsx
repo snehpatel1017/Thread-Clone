@@ -9,10 +9,11 @@ import { format } from "path";
 
 export default function AccountProfile() {
     const { data, status } = useSession();
+    const router = useRouter();
+    if (status !== 'authenticated') router.push("/sign-in")
     const [image, setImage] = useState(data?.user.thread_image == null ? data?.user.image : data.user.thread_image);
     const [username, setUsername] = useState(data?.user.thread_username == null ? data?.user.name : data.user.thread_username);
     const [bio, setBio] = useState(data?.user.thread_bio == null ? "" : data.user.thread_bio);
-    const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [isChange, setChange] = useState(false);
     const toBase64 = (file) =>

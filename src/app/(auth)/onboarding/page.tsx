@@ -6,6 +6,7 @@ import AccountProfile from '@/components/forms/AccountProfile';
 
 export default async function Home() {
   const data = await getServerSession(authOption);
+
   return (
     <main className="mx-auto flex max-w-3xl flex-col justify-start px-10 py-20">
       <h1 className='text-heading2-bold text-light-1'>Onboarding</h1>

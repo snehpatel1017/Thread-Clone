@@ -29,7 +29,7 @@ export default function LeftSidebar() {
                 })}
             </div>
             <div className="mt-10 px-6">
-                {status === 'authenticated' ? <button onClick={() => signOut()} className="gap-4 p-4 flex cursor-pointer"><Image src="/assets/logout.svg" alt="logout" width={24} height={24}></Image><p className="text-light-1">logout</p></button> : <button onClick={() => signIn('google')} className="gap-4 p-4 flex cursor-pointer"><Image src="/assets/sigin.svg" alt="sigin" width={24} height={24}></Image><p className="text-light-1">sigin</p></button>}
+                {status === 'authenticated' ? <button onClick={() => { signOut(); router.push("/sign-in") }} className="gap-4 p-4 flex cursor-pointer"><Image src="/assets/logout.svg" alt="logout" width={24} height={24}></Image><p className="text-light-1">logout</p></button> : <button onClick={() => signIn('google')} className="gap-4 p-4 flex cursor-pointer"><Image src="/assets/sigin.svg" alt="sigin" width={24} height={24}></Image><p className="text-light-1">signIn</p></button>}
             </div>
         </section>
     );

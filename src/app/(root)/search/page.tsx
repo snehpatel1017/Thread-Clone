@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { fecthUsers } from "@/actions/Users";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import ts from "typescript";
 
 interface User {
     id: string,
@@ -23,9 +24,15 @@ export default function Search() {
 
     async function handleSearch() {
         console.log(input)
+        if (input.length == 0) {
+            setResult([])
+            return;
+        }
         const searchString = input;
         const items = await fecthUsers({ searchString: searchString, sortBy: 'asc' });
+
         setResult([...items])
+
     }
 
     useEffect(() => {
@@ -39,14 +46,19 @@ export default function Search() {
 
         <section>
 
-            <div className="relative mb-10 text-light-2">
+            <div className="relative mb-10 text-light-2 flex justify-start">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                     </svg>
                 </div>
-                <input onChange={(e) => { setInput(e.target.value) }} type="text" id="default-search" className="  block w-full p-2 pl-10 text-sm text-light-2  rounded-lg bg-dark-2 border-dark-2 focus:outline-none" placeholder="Enter the username..." required />
-                <button onClick={handleSearch} className="text-white absolute right-2.5 bottom-2.5  font-medium rounded-lg text-sm px-4 "><img src="/assets/search.svg"></img></button>
+                <div className="w-full">
+
+                    <input onChange={(e) => { setInput(e.target.value) }} type="text" id="default-search" className="block w-full p-2 pl-10 text-sm text-light-2  rounded-lg bg-dark-2 border-dark-2 focus:outline-none" placeholder="Enter the username..." required />
+                </div>
+                <div>
+                    <button onClick={handleSearch} className="hover:bg-sky-300 bg-sky-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><img src="/assets/search.svg" className="rounded-full"></img></button>
+                </div>
             </div>
 
             <div className=" text-light-1 gap-10 flex flex-col">

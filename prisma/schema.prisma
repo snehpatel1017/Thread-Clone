@@ -49,7 +49,9 @@ model User {
   thread_username String?
   thread_bio      String?
 
-  thread Thread[]
+  thread     Thread[]
+  follows    Follows[] @relation(name: "firstuser")
+  followsers Follows[]
 }
 
 model Thread {
@@ -64,4 +66,13 @@ model Thread {
   parentThread Thread?  @relation(name: "recursive", fields: [parentId], references: [id], onDelete: Cascade)
 
   children Thread[] @relation(name: "recursive")
+}
+
+model Follows {
+  id        String @id @default(cuid())
+  user1     String
+  firstuser User   @relation(name: "firstuser", fields: [user1], references: [id])
+
+  user2      String
+  seconduser User   @relation(fields: [user2], references: [id])
 }

@@ -3,12 +3,15 @@
 import client from "@/Prisma_client/prisma_client";
 import { authOption } from "@/app/(next-auth)/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
+import { revalidatePath } from "next/cache";
+import { use } from "react";
 import z, { ZodError } from "zod";
 
 interface fetchUsers_params {
     searchString: string,
     sortBy: string,
 }
+
 export async function fecthUsers(params: fetchUsers_params) {
     const schema = z.object({
         searchString: z.string().min(1, "the search filed should not be empty !"),
@@ -70,5 +73,98 @@ export async function getActivity() {
     }
     catch (err: any) {
         console.log("Error !!!")
+    }
+}
+
+
+
+export async function fetchFollowers() {
+    const session = await getServerSession(authOption);
+
+    try {
+        const data = await client.follows.findMany({
+            where: {
+                user1: session?.user.id,
+            },
+            include: {
+                seconduser: {
+                    select: {
+                        name: true,
+                        thread_username: true,
+                        thread_image: true,
+                    }
+                }
+            }
+        })
+        return data;
+    }
+    catch (err) {
+
+    }
+}
+
+export async function fetchFollows() {
+    const session = await getServerSession(authOption);
+    try {
+        const data = await client.follows.findMany({
+            where: {
+                user2: session?.user.id,
+            },
+            include: {
+                firstuser: {
+                    select: {
+                        name: true,
+                        thread_username: true,
+                        thread_image: true,
+                    }
+                }
+            }
+        })
+        return data;
+    }
+    catch (err) {
+
+    }
+}
+
+
+export async function checkFollowing(u1: string, u2: string): Promise<boolean> {
+    try {
+
+        const data = await client.follows.findMany({
+            where: {
+                user1: u1,
+                user2: u2,
+            }
+        })
+        if (data.length == 0) return true;
+        return false;
+    }
+    catch (err: any) {
+        console.log(err.message)
+        console.log("error in checkFollowing")
+        return true
+    }
+}
+
+export async function addFollower(u1: string, u2: string, path: string): Promise<boolean> {
+    try {
+
+
+        const result = await client.follows.create({
+            data: {
+                user1: u1,
+                user2: u2,
+            }
+        })
+
+
+        revalidatePath(path)
+        return true
+    }
+    catch (err: any) {
+        console.log(err.message)
+        console.log("oyyyyyyyy")
+        return false
     }
 }
