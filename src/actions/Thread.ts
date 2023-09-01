@@ -83,3 +83,20 @@ export async function deleteThread({ threadId, path }: { threadId: string, path:
     })
     revalidatePath(path)
 }
+
+export async function fetchThreads(skip: any) {
+    const data = await client.thread.findMany({
+        where: {
+            parentId: null
+        },
+        orderBy: [{
+            createdAt: "desc"
+        }],
+        include: {
+            user: true,
+        },
+        skip: skip * 3,
+        take: 3,
+    });
+    return data
+}

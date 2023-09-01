@@ -2,10 +2,25 @@
 import Link from "next/link";
 import Image from "next/image";
 import EditorViewer from "../shared/EditorViewer";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { deleteThread } from "@/actions/Thread";
+import { useSession } from "next-auth/react";
+
+interface UserModel {
+    id: string,
+    name: string,
+    email: string,
+    image: string,
+    thread_username: string,
+    thread_bio: string,
+    thread_image: string,
+
+}
+
+
 
 export default function ThreadCard({ data, isComment = false, isUser }: any) {
+
     const pathname = usePathname();
     async function threadDelete() {
         const params = {

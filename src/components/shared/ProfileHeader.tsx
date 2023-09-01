@@ -1,3 +1,8 @@
+'use client';
+
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 interface Props {
     imageUrl: string,
     username: string,
@@ -6,6 +11,9 @@ interface Props {
 }
 
 export default function ProfileHeader({ imageUrl, username, name, bio }: Props) {
+    const router = useRouter();
+    const { data, status } = useSession();
+    if (status === 'authenticated' && data.user.thread_username == null) router.push("/onboarding")
     return (
 
         <div className="flex flex-col justify-start">

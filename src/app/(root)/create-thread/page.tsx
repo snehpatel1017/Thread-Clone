@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation"
 export default function Home() {
     const router = useRouter();
     const { data, status } = useSession();
+    if (status === 'authenticated' && data.user.thread_username == null) router.push("/onboarding")
+
     if (status !== 'authenticated') {
         router.push("/sign-in")
     }
