@@ -17,6 +17,22 @@ interface User {
 
 export default async function Profile({ params }: { params: { id: string } }) {
     const session_data = await getServerSession(authOption)
+    if (session_data == null) {
+        return (
+            <>
+                <div className="flex flex-col justify-start gap-3 w-full">
+                    <div className="flex justify-center">
+
+                        <h1 className='text-heading2-bold text-light-1'>You need to login to see the activity page</h1>
+                    </div>
+                    <div className="flex justify-center">
+                        <img src="https://previews.123rf.com/images/piren/piren1703/piren170301604/74998789-oops-on-a-black-background.jpg" className="h-60 w-60"></img>
+                    </div>
+                </div>
+
+            </>
+        );
+    }
     var follow = true;
     if (session_data?.user.id == params.id) {
         follow = false;
