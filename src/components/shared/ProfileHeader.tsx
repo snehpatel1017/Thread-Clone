@@ -37,11 +37,16 @@ export default function ProfileHeader({ imageUrl, username, name, bio, follow, u
                     <div className="">
                         <img src={imageUrl} className="rounded-full w-20 h-20"></img>
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 ">
                         <h3 className="text-heading3-bold">{name}</h3>
                         <p className='text-base-medium text-gray-1'>@{username}</p>
                         <button onClick={handlefollowing} className={`mt-3 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm w-full sm:w-auto px-3 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ${follow ? "bg-sky-800  hover:bg-sky-500" : "bg-sky-500"}`} disabled={!follow}>{text}
                         </button>
+                        {
+                            userID === data?.user.id ? (<button onClick={() => { router.push("/onboarding") }} className="ml-2 mt-3 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm w-full sm:w-auto px-3 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 bg-sky-800  hover:bg-sky-500">Edit
+                            </button>) : null
+
+                        }
                     </div>
                 </div>
             </div>

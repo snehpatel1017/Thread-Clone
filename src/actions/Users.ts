@@ -80,6 +80,7 @@ export async function getActivity() {
 
 export async function fetchFollowers() {
     const session = await getServerSession(authOption);
+    if (session == null) return [];
 
     try {
         const data = await client.follows.findMany({
@@ -105,6 +106,7 @@ export async function fetchFollowers() {
 
 export async function fetchFollows() {
     const session = await getServerSession(authOption);
+    if (session == null) return [];
     try {
         const data = await client.follows.findMany({
             where: {
