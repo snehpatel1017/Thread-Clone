@@ -38,7 +38,7 @@ export default async function Profile({ params }: { params: { id: string } }) {
     }
     var follow = null;
     if (session_data?.user.id == params.id) {
-        follow = null;
+        follow = session_data.user.id;
     }
     else {
         follow = await checkFollowing(session_data?.user.id, params.id)

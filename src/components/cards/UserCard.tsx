@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useId } from "react";
 
 interface params {
-    userID: string | null,
+    userID: any,
     name: string | null,
     username: string | null,
     imageUrl: string,

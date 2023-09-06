@@ -61,8 +61,11 @@ interface activity {
 export async function getActivity(): Promise<Array<activity>> {
     try {
         var session = await getServerSession(authOption);
+        if (!session) {
+            return [{ id: "23", body: "nothing", author: "nothing", createdAt: "nothing", parentId: null, user: { thread_image: "Sdf", thread_username: "sdf" } }];
+        }
 
-        const user: User = session!.user
+        const user: User = session.user
 
 
         const data = await client.thread.findMany({
@@ -165,7 +168,8 @@ export async function checkFollowing(host: string, user: string): Promise<string
             where: {
                 OR: [
 
-                    { user1: user, user2: host }
+                    { user1: user, user2: host, status: "approved" },
+                    { user1: user, user2: host, status: "following" }
                 ]
             }
             ,

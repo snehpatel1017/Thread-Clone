@@ -104,6 +104,7 @@ export async function fetchThreads(skip: any): Promise<object> {
             user1: true,
         }
     })
+    follows.push({ user1: session!.user.id })
     const data = await client.thread.findMany({
         where: {
             parentId: null,

@@ -11,10 +11,10 @@ import { Prisma } from "@prisma/client";
 
 
 interface User {
-    id: "sdfdf",
-    name: "sdfsdf",
-    thread_username: "sdfsdf",
-    thread_image: "Sdfsdf",
+    id: string,
+    name: string,
+    thread_username: string,
+    thread_image: string,
 }
 
 export default function Search() {
@@ -24,7 +24,7 @@ export default function Search() {
 
     if (status === 'authenticated' && data.user.thread_username == null) router.push("/onboarding")
     const [input, setInput] = useState("");
-    const [result, setResult] = useState<Array<Prisma.JsonValue>>([]);
+    const [result, setResult] = useState<Array<Prisma.JsonValue | User>>([]);
 
     async function handleSearch() {
         console.log(input)
@@ -33,7 +33,7 @@ export default function Search() {
             return;
         }
         const searchString = input;
-        const items: Array<Prisma.JsonValue> = await fecthUsers({ searchString: searchString, sortBy: 'asc' });
+        const items: Array<User | Prisma.JsonValue> = await fecthUsers({ searchString: searchString, sortBy: 'asc' });
 
         setResult([...items])
 
@@ -66,9 +66,9 @@ export default function Search() {
             </div>
 
             <div className=" text-light-1 gap-10 flex flex-col">
-                {result.map((user: Prisma.JsonValue, index) => {
+                {result.map((user, index) => {
                     //@ts-ignore
-                    return <UserCard key={index} userID={user?.id} name={user?.name} username={user?.thread_username} imageUrl={user?.thread_image} isright={false} />
+                    return <UserCard key={index} userID={user!.id} name={user?.name} username={user?.thread_username} imageUrl={user?.thread_image} isright={false} />
                 })}
             </div>
         </section >

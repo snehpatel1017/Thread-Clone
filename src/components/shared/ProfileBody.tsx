@@ -13,6 +13,7 @@ interface Props {
 }
 
 export default function ProfileBody({ threads, replies, isUser, follow }: Props) {
+
     const [tab, setTab] = useState("Threads")
     return (
         <div className="flex flex-col">
