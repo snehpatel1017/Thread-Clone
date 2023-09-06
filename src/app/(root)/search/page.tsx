@@ -4,23 +4,27 @@ import client from "@/Prisma_client/prisma_client";
 import UserCard from "@/components/cards/UserCard";
 import { useEffect, useRef, useState } from "react";
 import { fecthUsers } from "@/actions/Users";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import ts from "typescript";
+import { Prisma } from "@prisma/client";
+
 
 interface User {
-    id: string,
-    name: string,
-    thread_username: string,
-    thread_image: string,
+    id: "sdfdf",
+    name: "sdfsdf",
+    thread_username: "sdfsdf",
+    thread_image: "Sdfsdf",
 }
 
 export default function Search() {
     const router = useRouter();
     const { data, status } = useSession();
+    const pathname = usePathname();
+
     if (status === 'authenticated' && data.user.thread_username == null) router.push("/onboarding")
     const [input, setInput] = useState("");
-    const [result, setResult] = useState([]);
+    const [result, setResult] = useState<Array<Prisma.JsonValue>>([]);
 
     async function handleSearch() {
         console.log(input)
@@ -29,7 +33,7 @@ export default function Search() {
             return;
         }
         const searchString = input;
-        const items = await fecthUsers({ searchString: searchString, sortBy: 'asc' });
+        const items: Array<Prisma.JsonValue> = await fecthUsers({ searchString: searchString, sortBy: 'asc' });
 
         setResult([...items])
 
@@ -62,8 +66,9 @@ export default function Search() {
             </div>
 
             <div className=" text-light-1 gap-10 flex flex-col">
-                {result.map((user: User, index) => {
-                    return <UserCard key={index} userID={user.id} name={user.name} username={user.thread_username} imageUrl={user.thread_image} />
+                {result.map((user: Prisma.JsonValue, index) => {
+                    //@ts-ignore
+                    return <UserCard key={index} userID={user?.id} name={user?.name} username={user?.thread_username} imageUrl={user?.thread_image} isright={false} />
                 })}
             </div>
         </section >

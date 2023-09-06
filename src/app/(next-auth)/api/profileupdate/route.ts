@@ -33,7 +33,7 @@ export async function POST(request: Request) {
 
     }
     catch (error) {
-
+        //@ts-ignore
         return new Response(error.message, { status: 400 })
     }
     return new Response("Succesfully Profile Updated", { status: 200 });

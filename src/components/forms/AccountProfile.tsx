@@ -16,7 +16,7 @@ export default function AccountProfile() {
     const [bio, setBio] = useState(data?.user.thread_bio == null ? "" : data.user.thread_bio);
     const [loading, setLoading] = useState(false);
     const [isChange, setChange] = useState(false);
-    const toBase64 = (file) =>
+    const toBase64 = (file: Blob) =>
         new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -59,7 +59,11 @@ export default function AccountProfile() {
                         <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
                             <div className="sm:col-span-2 flex flex-row justify-start">
                                 <img className="rounded-full" src={image} width={100} height={100} alt="Rounded avatar" />
-                                <input className="py-9 px-4 w-72" id="small_size" type="file" accept="image/*" onChange={async (e) => { setChange(true); setImage(await toBase64(e.target.files[0])); }}></input>
+
+                                <input className="py-9 px-4 w-72" id="small_size" type="file" accept="image/*" onChange={async (e) => {
+                                    setChange(true);  //@ts-ignore
+                                    setImage(await toBase64(e.target.files[0]));
+                                }}></input>
                             </div>
 
                             <div className="sm:col-span-2">

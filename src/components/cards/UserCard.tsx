@@ -5,11 +5,11 @@ import { useRouter } from "next/navigation";
 import { useId } from "react";
 
 interface params {
-    userID: string,
-    name: string,
-    username: string,
+    userID: string | null,
+    name: string | null,
+    username: string | null,
     imageUrl: string,
-    isright: boolean,
+    isright: boolean | null,
 }
 
 export default function UserCard({ userID, name, username, imageUrl, isright = false }: params) {

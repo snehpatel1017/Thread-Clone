@@ -5,6 +5,7 @@ import EditorViewer from "../shared/EditorViewer";
 import { usePathname, useRouter } from "next/navigation";
 import { deleteThread } from "@/actions/Thread";
 import { useSession } from "next-auth/react";
+import { formatDateString } from "@/lib/utils";
 
 interface UserModel {
     id: string,
@@ -46,11 +47,15 @@ export default function ThreadCard({ data, isComment = false, isUser }: any) {
                         <div className='relative mt-2 w-0.5 grow rounded-full bg-neutral-800' />
                     </div>
                     <div className="flex flex-col w-full">
-                        <Link href={`/profile/${data.user.id}`} className='w-fit'>
-                            <h4 className='cursor-pointer text-base-semibold text-light-1'>
-                                {data.user.name}
-                            </h4>
-                        </Link>
+                        <div className="flex gap-3">
+
+                            <Link href={`/profile/${data.user.id}`} className='w-fit'>
+                                <h4 className='cursor-pointer text-base-semibold text-light-1'>
+                                    {data.user.name}
+                                </h4>
+                            </Link>
+                            <p className="text-gray-500 text-small-regular">{formatDateString(data.createdAt)}</p>
+                        </div>
 
                         {data.parentId == null ? <EditorViewer data={data.body} ></EditorViewer> : <div className=" font-serif pt-3 relative w-full flex flex-col justify-center">
                             {data.body.text}

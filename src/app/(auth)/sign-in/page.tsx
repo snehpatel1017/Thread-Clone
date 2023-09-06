@@ -10,12 +10,7 @@ export default function LogIn() {
   const router = useRouter();
   if (status === 'authenticated') router.push("/")
 
-  async function handler(e) {
-    e.preventDefault();
-    signIn("credentials", { ...data, redirect: false }).then(() => alert('user foudn')).catch(() => alert("Wrong"))
 
-
-  }
   return (
     <>
 

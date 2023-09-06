@@ -2,6 +2,7 @@
 
 import client from "@/Prisma_client/prisma_client";
 import { authOption } from "@/app/(next-auth)/api/auth/[...nextauth]/route";
+import { Prisma } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { use } from "react";
@@ -11,8 +12,15 @@ interface fetchUsers_params {
     searchString: string,
     sortBy: string,
 }
+interface User {
+    id: string,
+    name: string,
+    thread_bio: string,
+    thread_image: string,
+    thread_username: string,
+}
 
-export async function fecthUsers(params: fetchUsers_params) {
+export async function fecthUsers(params: fetchUsers_params): Promise<Array<Prisma.JsonValue>> {
     const schema = z.object({
         searchString: z.string().min(1, "the search filed should not be empty !"),
         sortBy: z.string(),
@@ -37,18 +45,29 @@ export async function fecthUsers(params: fetchUsers_params) {
         return result;
     }
     catch (err: any) {
-        if (err instanceof ZodError) return -1;
-        return -2;
+
+        return [{ num: -2 }];
     }
 }
+interface activity {
+    id: string;
+    body: Prisma.JsonValue;
+    author: string;
+    createdAt: Date | string;
+    parentId: string | null;
+    user: { thread_image: string, thread_username: string }
+}
 
-
-export async function getActivity() {
+export async function getActivity(): Promise<Array<activity>> {
     try {
-        const session = await getServerSession(authOption)
+        var session = await getServerSession(authOption);
+
+        const user: User = session!.user
+
+
         const data = await client.thread.findMany({
             where: {
-                author: session.user.id,
+                author: user.id,
                 parentId: null,
             },
             include: {
@@ -73,12 +92,13 @@ export async function getActivity() {
     }
     catch (err: any) {
         console.log("Error !!!")
+        return [{ id: "23", body: "nothing", author: "nothing", createdAt: "nothing", parentId: null, user: { thread_image: "Sdf", thread_username: "sdf" } }]
     }
 }
 
 
 
-export async function fetchFollowers() {
+export async function fetchFollowers(): Promise<Array<object>> {
     const session = await getServerSession(authOption);
     if (session == null) return [];
 
@@ -86,6 +106,10 @@ export async function fetchFollowers() {
         const data = await client.follows.findMany({
             where: {
                 user1: session?.user.id,
+                OR: [
+                    { status: "following" },
+                    { status: "approved" },
+                ]
             },
             include: {
                 seconduser: {
@@ -100,7 +124,7 @@ export async function fetchFollowers() {
         return data;
     }
     catch (err) {
-
+        return [{ num: -2 }]
     }
 }
 
@@ -111,6 +135,10 @@ export async function fetchFollows() {
         const data = await client.follows.findMany({
             where: {
                 user2: session?.user.id,
+                OR: [
+                    { status: "following" },
+                    { status: "approved" },
+                ]
             },
             include: {
                 firstuser: {
@@ -130,43 +158,116 @@ export async function fetchFollows() {
 }
 
 
-export async function checkFollowing(u1: string, u2: string): Promise<boolean> {
+export async function checkFollowing(host: string, user: string): Promise<string | null> {
     try {
 
-        const data = await client.follows.findMany({
+        const data = await client.follows.findFirst({
             where: {
-                user1: u1,
-                user2: u2,
+                OR: [
+
+                    { user1: user, user2: host }
+                ]
+            }
+            ,
+            select: {
+                status: true,
             }
         })
-        if (data.length == 0) return true;
-        return false;
+
+        if (data != null) return data.status;
+        return null;
     }
     catch (err: any) {
         console.log(err.message)
         console.log("error in checkFollowing")
-        return true
+        return null
     }
 }
 
-export async function addFollower(u1: string, u2: string, path: string): Promise<boolean> {
+export async function addFollower(host: string, user: string, path: string): Promise<string | null> {
     try {
+        var result = null;
+        try {
+            result = await client.follows.update({
+                data: {
+                    status: "following"
+                },
+                where: {
+                    user1_user2: {
+                        user1: host,
+                        user2: user,
 
+                    },
+                },
+                select: {
+                    status: true,
+                }
+            })
+        }
+        catch (err: any) {
+            console.log("not found so no update!!")
+        }
 
-        const result = await client.follows.create({
+        const temp = await client.follows.create({
             data: {
-                user1: u1,
-                user2: u2,
+                status: result === null ? "requested" : "following",
+                user1: user,
+                user2: host,
+            },
+            select: {
+                status: true,
             }
         })
 
 
         revalidatePath(path)
-        return true
+        return temp.status;
     }
     catch (err: any) {
         console.log(err.message)
-        console.log("oyyyyyyyy")
+
+        return null
+    }
+}
+
+
+export async function unfollowUser(host: string, user: string, path: string): Promise<boolean> {
+    try {
+
+        try {
+            var result = await client.follows.update({
+                data: {
+                    status: "requested"
+                },
+                where: {
+                    user1_user2: {
+                        user1: host,
+                        user2: user,
+
+                    },
+                },
+            })
+        }
+        catch (err: any) {
+            console.log("not found in unfollowUser")
+
+        }
+        var temp = await client.follows.delete({
+            where: {
+                user1_user2: {
+                    user1: user,
+                    user2: host,
+                }
+            }
+        })
+
+        revalidatePath(path)
+        return true;
+    }
+    catch (err: any) {
+        console.log(err.message)
         return false
     }
 }
+
+

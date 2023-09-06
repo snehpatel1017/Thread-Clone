@@ -5,8 +5,9 @@ import ThreadCard from "@/components/cards/ThreadCard";
 import EditorViewer from "@/components/shared/EditorViewer";
 import { stat } from "fs";
 import { useSession } from "next-auth/react";
+import { revalidatePath } from "next/cache";
 import { David_Libre } from "next/font/google";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -14,6 +15,8 @@ export default function Home() {
 
     var { data, status } = useSession();
     const router = useRouter();
+    const pathname = usePathname();
+
     if (status === 'authenticated' && data?.user.thread_username == null) router.push("/onboaring")
 
     const [skip, setSkip] = useState(0);
@@ -23,7 +26,9 @@ export default function Home() {
 
     async function fetch() {
         const data_item = await fetchThreads(skip);
+        //@ts-ignore
         setItems([...items, ...data_item]);
+        //@ts-ignore
         if (data_item.length === 0) {
             setHasMore(false);
         }

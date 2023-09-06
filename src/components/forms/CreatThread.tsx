@@ -35,7 +35,7 @@ export default function CreateThread() {
 
 
     }
-    const toBase64 = (file) =>
+    const toBase64 = (file: Blob) =>
         new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
@@ -45,6 +45,7 @@ export default function CreateThread() {
 
     const initializeEditor = useCallback(async () => {
         const EditorJS = (await import("@editorjs/editorjs")).default;
+        //@ts-ignore
         const Header = (await import("@editorjs/header")).default;
         //@ts-ignore
         const Embed = (await import("@editorjs/embed")).default;

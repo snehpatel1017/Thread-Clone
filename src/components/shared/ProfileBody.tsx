@@ -2,13 +2,17 @@
 import Link from "next/link";
 import { useState } from "react";
 import ThreadCard from "../cards/ThreadCard";
+import { GetResult } from "@prisma/client/runtime";
+import { Prisma } from "@prisma/client";
 
 interface Props {
-    threads: Array<JSON>,
+    threads: Array<Prisma.JsonValue>,
+    replies: Array<Prisma.JsonValue>,
     isUser: Boolean,
+    follow: string | null,
 }
 
-export default function ProfileBody({ threads, isUser }: Props) {
+export default function ProfileBody({ threads, replies, isUser, follow }: Props) {
     const [tab, setTab] = useState("Threads")
     return (
         <div className="flex flex-col">
@@ -31,16 +35,17 @@ export default function ProfileBody({ threads, isUser }: Props) {
             <div className="mt-5 flex flex-col justify-start gap-5">
 
                 {
-                    tab == "Threads" ?
+                    follow === null ? null : follow !== "requested" ? (tab == "Threads" ?
 
-                        threads.map((thread) => {
-                            return <ThreadCard data={thread} isUser={isUser}></ThreadCard>
+                        threads.map((thread, index) => {
+                            return <ThreadCard key={index} data={thread} isUser={isUser}></ThreadCard>
                         })
-                        : tab == "Replies" ? threads.map((thread) => {
-                            return <ThreadCard data={thread} isUser={isUser}></ThreadCard>
-                        }) : threads.map((thread) => {
-                            return <ThreadCard data={thread} isUser={isUser}></ThreadCard>
-                        })
+                        : tab == "Replies" ? replies.map((thread, index) => {
+                            return <ThreadCard key={index} data={thread} isUser={isUser}></ThreadCard>
+                        }) : threads.map((thread, index) => {
+                            return <ThreadCard key={index} data={thread} isUser={isUser}></ThreadCard>
+                        })) :
+                        (null)
                 }
             </div>
 

@@ -3,6 +3,7 @@ import ThreadCard from "@/components/cards/ThreadCard";
 import { getServerSession } from "next-auth"
 import { authOption } from "@/app/(next-auth)/api/auth/[...nextauth]/route";
 import Comments from "@/components/forms/Comments";
+import { checkFollowing } from "@/actions/Users";
 
 
 export default async function Thread({ params }: { params: { id: string } }) {
@@ -20,8 +21,34 @@ export default async function Thread({ params }: { params: { id: string } }) {
                 }
             },
             user: true,
+
         }
     })
+    var follow = null;
+    if (data?.author !== session_data.user.id) {
+        //@ts-ignore
+        follow = await checkFollowing(data?.author, session_data?.user.id)
+    }
+    else {
+        follow = data?.author
+    }
+
+    if (follow === null) {
+        return (
+            <>
+                <div className="flex flex-col justify-start gap-3 w-full">
+                    <div className="flex justify-center">
+
+                        <h1 className='text-heading2-bold text-light-1'>You need to follow this thread's author to see this page</h1>
+                    </div>
+                    <div className="flex justify-center">
+                        <img src="https://previews.123rf.com/images/piren/piren1703/piren170301604/74998789-oops-on-a-black-background.jpg" className="h-60 w-60"></img>
+                    </div>
+                </div>
+
+            </>
+        );
+    }
 
     return (
         <section className='relative'>
@@ -37,8 +64,9 @@ export default async function Thread({ params }: { params: { id: string } }) {
             </div>
 
             <div className='mt-10'>
-                {data.children.map((childItem: any) => (
+                {data?.children.map((childItem: any, index) => (
                     <ThreadCard
+                        key={index}
                         data={childItem}
                         isComment={true}
                     />

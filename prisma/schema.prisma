@@ -60,7 +60,6 @@ model Thread {
 
   author       String
   user         User     @relation(fields: [author], references: [id], onDelete: Cascade)
-  community    String?
   createdAt    DateTime @default(now())
   parentId     String?
   parentThread Thread?  @relation(name: "recursive", fields: [parentId], references: [id], onDelete: Cascade)
@@ -75,4 +74,9 @@ model Follows {
 
   user2      String
   seconduser User   @relation(fields: [user2], references: [id])
+
+  status    String
+  createdAt DateTime @default(now())
+
+  @@unique([user1, user2])
 }

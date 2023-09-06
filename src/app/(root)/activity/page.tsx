@@ -1,9 +1,45 @@
 import client from "@/Prisma_client/prisma_client";
 import { fetchFollowers, getActivity } from "@/actions/Users";
+import { fetchFollowRequest } from "@/actions/Activity";
 import { authOption } from "@/app/(next-auth)/api/auth/[...nextauth]/route";
+import { ActivityCard } from "@/components/cards/ActivityCard";
+import { Prisma } from "@prisma/client";
 import { getServerSession } from "next-auth";
 
 import Link from "next/link";
+interface User {
+    thread_image: string,
+    thread_username: string,
+}
+interface activity {
+    id: string;
+    body: Prisma.JsonValue;
+    author: string;
+    createdAt: Date | string;
+    parentId: string | null;
+    user: User
+}
+
+interface seconduser {
+    thread_username: string | null;
+    thread_image: string | null;
+};
+
+interface firstuser {
+    thread_username: string | null;
+    thread_image: string | null;
+};
+interface followrequest {
+    id: string;
+    user1: string;
+    user2: string;
+    status: string;
+    createdAt: Date | string;
+    seconduser: seconduser,
+    firstuser: firstuser
+}
+
+
 
 export default async function Activity() {
     const session = await getServerSession(authOption);
@@ -24,8 +60,8 @@ export default async function Activity() {
         );
     }
     else {
-        const activity = await getActivity();
-        const timepass = await fetchFollowers();
+        const activity: Array<activity> = await getActivity();
+        const followeRequest: Array<followrequest> = await fetchFollowRequest();
 
         return (
 
@@ -51,6 +87,22 @@ export default async function Activity() {
                         </>
                     ) : (
                         <p className='!text-base-regular text-light-3'>No activity yet</p>
+                    )}
+                </section>
+                <section className='mt-10 flex flex-col gap-5'>
+                    {followeRequest?.length > 0 ? (
+                        <>
+                            {followeRequest.map((request, index) => {
+                                if (request.status === "requested") {
+                                    return <ActivityCard key={index} userID={request.user2} thread_image={request.seconduser.thread_image} thread_username={request.seconduser.thread_username} text="requested to follow You" type={1}></ActivityCard>;
+                                }
+                                else {
+                                    return <ActivityCard key={index} userID={request.status === "approved" ? request.user2 : request.user1} thread_image={request.status === "approved" ? request.seconduser.thread_image : request.firstuser.thread_image} thread_username={request.status === "approved" ? request.seconduser.thread_username : request.firstuser.thread_username} text={request.status} type={request.status === "approved" ? 3 : 2}></ActivityCard>;
+                                }
+                            })}
+                        </>
+                    ) : (
+                        <p className='!text-base-regular text-light-3'>No Follow Request</p>
                     )}
                 </section>
             </>

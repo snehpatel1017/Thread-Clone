@@ -1,9 +1,11 @@
 "use client";
 import CreateThread from '@/components/forms/CreatThread';
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation"
+import { revalidatePath } from 'next/cache';
+import { usePathname, useRouter } from "next/navigation"
 export default function Home() {
     const router = useRouter();
+    const pathname = usePathname();
     const { data, status } = useSession();
     if (status === 'authenticated' && data.user.thread_username == null) router.push("/onboarding")
 
