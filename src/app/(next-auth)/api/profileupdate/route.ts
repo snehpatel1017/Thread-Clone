@@ -19,7 +19,6 @@ export async function POST(request: Request) {
         if (/^[A-Za-z0-9]*$/.test(data.username) == false) {
             throw new Error("User name only contain numbers and characters!");
         }
-
         const db_res = await client.user.update({
             data: {
                 thread_bio: data.userbio,
