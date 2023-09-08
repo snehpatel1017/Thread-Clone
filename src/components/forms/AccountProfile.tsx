@@ -19,14 +19,11 @@ const toBase64 = (file: Blob) =>
     });
 
 function CorppingImage(oldimag: any, src: any, setisCrop: any, setOutput: any, image: any, setImage: any, crop: any, setCrop: any) {
-    // const [src, setSrc] = useState("");
 
 
     const cropImageNow = () => {
         const canvas = document.createElement('canvas');
-        //@ts-ignore
         const scaleX = image.naturalWidth / image.width;
-        //@ts-ignore
         const scaleY = image.naturalHeight / image.height;
         canvas.width = crop.width;
         canvas.height = crop.height;
@@ -76,14 +73,13 @@ export default function AccountProfile() {
         y: 0,
         width: 350,
         height: 350,
-        // aspect: 1,
     });
     const [cropimage, setcropImage] = useState<any>(null);
     const { data, status } = useSession();
     const [output, setOutput] = useState("");
     const router = useRouter();
     if (status !== 'authenticated') router.push("/sign-in")
-    const [image, setImage] = useState(data?.user.thread_image);
+    const [image, setImage] = useState<any>(data?.user.thread_image);
     const [username, setUsername] = useState(data?.user.thread_username);
     const [bio, setBio] = useState(data?.user.thread_bio);
     const [loading, setLoading] = useState(false);
@@ -112,9 +108,7 @@ export default function AccountProfile() {
 
     }
 
-    async function handleCropping(file) {
-        //@ts-ignore
-
+    async function handleCropping(file: Blob) {
         setImage(await toBase64(file))
         setisCrop(true);
     }
