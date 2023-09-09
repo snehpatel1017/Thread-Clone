@@ -126,7 +126,7 @@ export default function AccountProfile() {
                                     <div className="sm:col-span-2 flex flex-row justify-start">
                                         <img className="rounded-full object-cover w-24 h-24" src={image} alt="Rounded avatar" />
 
-                                        <input className="py-9 px-4 w-72" id="small_size" type="file" accept="image/*" onChange={(e) => { handleCropping(e.target.files![0]) }}></input>
+                                        <input className="py-9 px-4 w-72" id="small_size" type="file" accept="image/*" onChange={(e) => { handleCropping(e.target.files![0]) }} required></input>
                                     </div>
 
                                     <div className="sm:col-span-2">

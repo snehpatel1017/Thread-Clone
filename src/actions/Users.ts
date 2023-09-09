@@ -167,9 +167,8 @@ export async function checkFollowing(host: string, user: string): Promise<string
         const data = await client.follows.findFirst({
             where: {
                 OR: [
-
                     { user1: user, user2: host, status: "approved" },
-                    { user1: user, user2: host, status: "following" }
+                    { user1: user, user2: host, status: "following" },
                 ]
             }
             ,

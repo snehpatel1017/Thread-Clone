@@ -27,7 +27,7 @@ export default async function Thread({ params }: { params: { id: string } }) {
     var follow = null;
     if (data?.author !== session_data.user.id) {
         //@ts-ignore
-        follow = await checkFollowing(data?.author, session_data?.user.id)
+        follow = await checkFollowing(session_data?.user.id, data?.author)
     }
     else {
         follow = data?.author
