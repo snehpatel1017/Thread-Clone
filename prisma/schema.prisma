@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -45,7 +45,7 @@ model User {
   image           String?
   accounts        Account[]
   sessions        Session[]
-  thread_image    String?   @db.LongText
+  thread_image    String?
   thread_username String?
   thread_bio      String?
 
