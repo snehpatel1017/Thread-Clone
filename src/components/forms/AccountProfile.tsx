@@ -94,11 +94,10 @@ export default function AccountProfile() {
             'userimage': image,
             'userbio': bio,
         }
-        axios.post("http://localhost:3000/api/profileupdate/", formdata)
+        axios.post("/api/profileupdate/", formdata)
             .then((res) => {
-                setChange(false);
-                setLoading(false);
                 router.push('/');
+
             })
             .catch((err) => {
                 setChange(false);

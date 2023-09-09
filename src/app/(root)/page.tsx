@@ -17,7 +17,7 @@ export default function Home() {
     const router = useRouter();
     const pathname = usePathname();
 
-    if (status === 'authenticated' && data?.user.thread_username == null) router.push("/onboaring")
+    if (status === 'authenticated' && data?.user.thread_username == null) router.push("/onboarding")
 
     const [skip, setSkip] = useState(0);
     const [items, setItems] = useState([]);
