@@ -53,7 +53,7 @@ export default function Search() {
             <div className="relative mb-10 text-light-2 flex justify-start">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                     </svg>
                 </div>
                 <div className="w-full">
@@ -66,8 +66,7 @@ export default function Search() {
             </div>
 
             <div className=" text-light-1 gap-10 flex flex-col">
-                {result.map((user, index) => {
-                    //@ts-ignore
+                {result.map((user: any, index) => {
                     return <UserCard key={index} userID={user!.id} name={user?.name} username={user?.thread_username} imageUrl={user?.thread_image} isright={false} />
                 })}
             </div>

@@ -22,7 +22,7 @@ export default function Home() {
     const [skip, setSkip] = useState(0);
     const [items, setItems] = useState([]);
     const [hasMore, setHasMore] = useState(true);
-    // console.log(data)
+
 
     async function fetch() {
         const data_item = await fetchThreads(skip);
@@ -51,9 +51,9 @@ export default function Home() {
                 className="flex flex-col gap-10"
             >
                 {items.map((d, index) => {
-                    return (<>
+                    return (
                         <ThreadCard data={d} isComment={false} key={index} />
-                    </ >
+
                     );
                 })}
             </InfiniteScroll>
