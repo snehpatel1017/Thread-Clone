@@ -9,7 +9,7 @@ import { Session } from "inspector";
 import { throws } from "assert";
 import { Prisma } from "@prisma/client";
 interface params {
-    communityId: string | null,
+
     path: string
 }
 const comment = z.object({
@@ -33,7 +33,6 @@ export async function makeThread(data: params, body: any): Promise<void> {
     //@ts-ignore
     const user: User = session?.user
     const schema = z.object({
-        communityId: z.string().nullable(),
         path: z.string(),
     })
 

@@ -15,24 +15,11 @@ export default function CreateThread() {
     const pathname = usePathname();
     async function handleSubmit() {
         setLoading(true);
-        const editorData = await ref.current?.save();
-
-
-
-        const communityId = null
+        const editorData = await ref.current!.save();
         const path = pathname
-
-        try {
-
-            await makeThread({ communityId, path }, editorData)
-            router.push("/")
-        }
-        catch (err: any) {
-            setLoading(false)
-            alert(err.message)
-        }
-
-
+        await makeThread({ path }, editorData);
+        setLoading(false);
+        router.push("/");
 
     }
     const toBase64 = (file: Blob) =>
