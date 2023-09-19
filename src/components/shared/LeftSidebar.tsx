@@ -21,7 +21,7 @@ export default function LeftSidebar() {
                     if (link.route === "/profile") link.route = `${link.route}/${data?.user.id}`;
 
                     return (
-                        <Link href={link.route} key={link.label} className={`relative flex justify-start gap-4 rounded-lg py-3 pl-2 ${isActive && "bg-primary-500 "}`}>
+                        <Link href={link.route} key={link.label} className={`border-b-2 border-b-dark-2  hover:border-b-purple-500 relative flex justify-start gap-4 rounded-lg py-3 pl-2 ${isActive && "bg-primary-500 "}`}>
                             <Image src={link.imgURL} alt={link.label} width={24} height={24}></Image>
                             <p className="text-light-1 max-lg:hidden">{link.label}</p>
                         </Link>
@@ -29,7 +29,7 @@ export default function LeftSidebar() {
                 })}
             </div>
             <div className="mt-10 px-6">
-                {status === 'authenticated' ? <button onClick={() => { router.push("/sign-out") }} className="gap-4 p-4 flex cursor-pointer"><Image src="/assets/logout.svg" alt="logout" width={24} height={24}></Image><p className="text-light-1">logout</p></button> : <button onClick={() => router.push('/sign-in')} className="gap-4 p-4 flex cursor-pointer"><Image src="/assets/sigin.svg" alt="sigin" width={24} height={24}></Image><p className="text-light-1">signIn</p></button>}
+                {status === 'authenticated' ? <button onClick={() => { router.push("/sign-out") }} className="border-b-2 border-b-dark-2 hover:border-b-purple-500 gap-4 p-4 flex cursor-pointer"><Image src="/assets/logout.svg" alt="logout" width={24} height={24}></Image><p className="text-light-1">logout</p></button> : <button onClick={() => router.push('/sign-in')} className="gap-4 p-4 flex cursor-pointer"><Image src="/assets/sigin.svg" alt="sigin" width={24} height={24}></Image><p className="text-light-1">signIn</p></button>}
             </div>
         </section>
     );

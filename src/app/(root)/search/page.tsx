@@ -67,7 +67,7 @@ export default function Search() {
 
             <div className=" text-light-1 gap-10 flex flex-col">
                 {result.map((user: any, index) => {
-                    return <UserCard key={index} userID={user!.id} name={user?.name} username={user?.thread_username} imageUrl={user?.thread_image} isright={false} />
+                    return <UserCard key={index} userID={user!.id} name={user?.name} username={user?.thread_username} imageUrl={user?.thread_image} />
                 })}
             </div>
         </section >

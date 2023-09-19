@@ -17,7 +17,7 @@ export default function UserCard({ userID, name, username, imageUrl, isright = f
     return (
         <article className="flex justify-start gap-4">
             <div>
-                <img src={imageUrl} className={`${isright ? "w-24 h-12" : "w-16 h-16"} object-cover rounded-full`}></img>
+                <img src={imageUrl} className={`${isright ? "w-24 h-12" : "w-20 h-16"} object-cover rounded-full`}></img>
             </div>
             <div className="flex flex-col w-full">
                 <h3>{name}</h3>
