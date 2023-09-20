@@ -32,6 +32,7 @@ export default function ThreadCard({ data, isComment = false, isUser }: any) {
         await deleteThread(params);
 
     }
+    const createdtime = formatDateString(data.createdAt);
     return (
         <article className={`flex w-full flex-col rounded-xl ${isComment ? "px-0 xs:px-7" : "bg-dark-2 p-7"} text-light-1`}>
             <div className='flex items-start justify-between'>
@@ -47,14 +48,14 @@ export default function ThreadCard({ data, isComment = false, isUser }: any) {
                         <div className='relative mt-2 w-0.5 grow rounded-full bg-neutral-800' />
                     </div>
                     <div className="flex flex-col w-full">
-                        <div className="flex gap-3">
+                        <div className="flex gap-3 w-full justify-between">
 
                             <Link href={`/profile/${data.user.id}`} className='w-fit'>
                                 <h4 className='cursor-pointer text-base-semibold text-light-1'>
                                     {data.user.name}
                                 </h4>
                             </Link>
-                            <p className="text-gray-500 text-small-regular">{formatDateString(data.createdAt)}</p>
+                            <p className="text-gray-500">{createdtime}</p>
                         </div>
 
                         {data.parentId == null ? <EditorViewer data={data.body} ></EditorViewer> : <div className=" font-serif pt-3 relative w-full flex flex-col justify-center">

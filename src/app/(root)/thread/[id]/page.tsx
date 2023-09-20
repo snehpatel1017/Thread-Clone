@@ -49,29 +49,33 @@ export default async function Thread({ params }: { params: { id: string } }) {
             </>
         );
     }
-
-    return (
-        <section className='relative'>
-            <div>
-                <ThreadCard
-                    data={data}
-                    isComment={false}
-                />
-            </div>
-
-            <div className='mt-7'>
-                {session_data != null ? <Comments data={session_data} threadId={data?.id} /> : null}
-            </div>
-
-            <div className='mt-10'>
-                {data?.children.map((childItem: any, index) => (
+    else {
+        return (
+            <section className='relative'>
+                <div>
                     <ThreadCard
-                        key={index}
-                        data={childItem}
-                        isComment={true}
+                        data={data}
+                        isComment={false}
                     />
-                ))}
-            </div>
-        </section>
-    );
+                </div>
+
+                <div className='mt-7'>
+                    {session_data != null ? <Comments data={session_data} threadId={data?.id} /> : null}
+                </div>
+
+                <div className='mt-10'>
+                    {data?.children.map((childItem: any, index) => (
+                        <ThreadCard
+                            key={index}
+                            data={childItem}
+                            isComment={true}
+                        />
+                    ))}
+                </div>
+            </section>
+        );
+
+    }
+
+
 }
