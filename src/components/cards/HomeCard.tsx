@@ -17,7 +17,7 @@ export default function HomeCard() {
     var { data, status } = useSession();
     const router = useRouter();
     const pathname = usePathname();
-
+    if (status !== 'authenticated') router.push("/sign-in")
     if (status === 'authenticated' && data?.user.thread_username == null) router.push("/onboarding")
 
     const [skip, setSkip] = useState(0);
