@@ -43,7 +43,7 @@ export default async function RightSidebar() {
                 <h3 className="text-heading4-medium text-light-1">Your Followers</h3>
                 {
                     followers?.length == 0 ? "You have no Followers" : (
-                        <div className="text-light-1 mt-3 h-56 bg-dark-1 p-2 overflow-y-scroll">
+                        <div className="text-light-1 mt-3 h-56 bg-dark-1 p-2 no-scrollbar">
                             {followers?.map((user: Prisma.JsonValue, index) => {
                                 //@ts-ignore
                                 return <><UserCard key={index} userID={user?.user2} name={user?.seconduser.name} username={user?.seconduser.thread_username} imageUrl={user?.seconduser.thread_image} isright={true}></UserCard><div className="w-full h-0.5 bg-dark-2 mt-3" /></>
@@ -57,11 +57,12 @@ export default async function RightSidebar() {
                 <h3 className="text-heading4-medium text-light-1">You Follows</h3>
                 {
                     follows?.length == 0 ? "You are not Following anyone" : (
-                        <div className="text-light-1 mt-3 h-56 bg-dark-1 p-2">
+                        <div className="text-light-1 mt-3 h-56 bg-dark-1 p-2 no-scrollbar">
                             {follows.map((user: Prisma.JsonValue, index) => {
                                 //@ts-ignore
                                 return <><UserCard key={index} userID={user?.user1} name={user?.firstuser.name} username={user?.firstuser.thread_username} imageUrl={user?.firstuser.thread_image} isright={true} ></UserCard><div className="w-full h-0.5 bg-dark-2 mt-3" /></>
                             })}
+
 
                         </div>)
                 }

@@ -45,7 +45,7 @@ export default function HomeCard() {
                 dataLength={items.length}
                 next={fetch}
                 hasMore={hasMore}
-                loader={<div className="flex gap-2">
+                loader={<div className="flex gap-2 no-scrollbar justify-center">
                     <Image src='/assets/loaiding-state.png' alt='heart'
                         width={24}
                         height={24}
@@ -53,14 +53,11 @@ export default function HomeCard() {
                     /><p className="text-purple-900 text-body-bold">Loading....</p>
                 </div>
                 }
-                className="flex flex-col gap-10"
+                className="flex flex-col gap-10 no-scrollbar"
             >
                 {items.map((d, index) => {
                     return (
-
                         <ThreadCard data={d} isComment={false} key={index} />
-
-
                     );
                 })}
             </InfiniteScroll>

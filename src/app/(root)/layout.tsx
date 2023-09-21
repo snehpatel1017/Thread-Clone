@@ -26,7 +26,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
 
-      <body className={inter.className}>
+      <body className="no-scrollbar">
         <Topbar />
         <main className='flex flex-row'>
           <Provider session={session}>
