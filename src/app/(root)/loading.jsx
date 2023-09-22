@@ -1,9 +1,10 @@
 import Image from "next/image";
+
 export default function HomeLoadingState() {
     return (<center>
         <div>
             <Image
-                src='/assets/loaiding-state.png'
+                src='/assets/loader-2.svg'
                 alt='heart'
                 width={40}
                 height={40}

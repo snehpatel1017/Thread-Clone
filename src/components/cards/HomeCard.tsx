@@ -46,11 +46,11 @@ export default function HomeCard() {
                 next={fetch}
                 hasMore={hasMore}
                 loader={<div className="flex gap-2 no-scrollbar justify-center">
-                    <Image src='/assets/loaiding-state.png' alt='heart'
+                    <Image src='/assets/loader-2.svg' alt='Loading...'
                         width={24}
                         height={24}
                         className='cursor-pointer object-contain animate-spin'
-                    /><p className="text-purple-900 text-body-bold">Loading....</p>
+                    /><p className="text-light-3 text-body-bold">Loading....</p>
                 </div>
                 }
                 className="flex flex-col gap-10 no-scrollbar"
